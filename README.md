@@ -100,6 +100,10 @@ py -3.11 -m venv .venv
 The frontend runs at `http://localhost:3000` and the API at `http://localhost:5000`. The backend accepts local development origins, including alternate localhost ports. Set `REACT_APP_API_URL` before starting the frontend if the API uses a different address.
 The API uses Google's supported `google-genai` SDK with `gemini-3.5-flash`; if Google temporarily returns a rate-limit or server error, it retries once with `gemini-flash-lite-latest`. The health endpoint at `http://localhost:5000/health` reports the configured models and whether a Gemini key is configured.
 
+### Deploy the Backend to Render
+
+Create or update the Render service from the repository's `render.yaml` Blueprint. It sets `backend` as the service root, installs its `requirements.txt`, starts the API with Gunicorn, and configures `/health` as the health check. In the Render environment, set `GEMINI_API_KEY` and `FRONTEND_ORIGINS` to the deployed frontend origin (for example, `https://your-app.onrender.com`; separate multiple origins with commas). Set the frontend's `REACT_APP_API_URL` to the Render backend URL and redeploy the frontend.
+
 ---
 
 ## 🔐 Environment Variables

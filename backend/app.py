@@ -14,9 +14,14 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+configured_frontend_origins = [
+    origin.strip().rstrip('/')
+    for origin in os.getenv('FRONTEND_ORIGINS', '').split(',')
+    if origin.strip()
+]
 CORS(
     app,
-    origins=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
+    origins=[r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$", *configured_frontend_origins],
     supports_credentials=True
 )
 
@@ -220,6 +225,6 @@ def export_analysis():
 if __name__ == '__main__':
     print("Starting Enhanced AI Revenue Dashboard Backend...")
     print(f"Gemini API: {'Configured' if os.getenv('GEMINI_API_KEY') else 'Missing'}")
-    print("CORS: Enabled for localhost development origins")
+    print("CORS: Enabled for localhost and configured frontend origins")
     print("Endpoints: /health, /api/analyze, /api/export")
     app.run(debug=True, port=5000)
