@@ -209,6 +209,15 @@ def health_check():
         'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     })
 
+@app.route('/', methods=['GET'])
+def service_status():
+    """Show a simple status message at the service root."""
+    return jsonify({
+        'service': 'InsightSync API',
+        'status': 'ok',
+        'health': '/health'
+    })
+
 @app.route('/api/export', methods=['POST'])
 def export_analysis():
     """Export analysis results"""
